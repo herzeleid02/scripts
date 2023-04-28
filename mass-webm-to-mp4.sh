@@ -1,4 +1,5 @@
 # DO NOT USE IT
+# probably need to redo this shit lol with uhhh file handling
 
 #!/bin/bash
 
@@ -15,5 +16,5 @@ echo $input_dir
 echo $output_dir
 
 
-for i in "$input_dir"/*.webm; do ffmpeg -n -i "$i" ""$output_dir"/${i%*}.mp4"; done
+for i in "$input_dir"/*.webm; do ffmpeg -n -i "$i" ""$output_dir"/${i%.*}.mp4"; done
 exit 0
