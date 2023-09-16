@@ -2,10 +2,11 @@
 # a script to symlink all neccessary stuff (data folders from ~/ and more)
 SOURCEDIR="$1"
 TARGETDIR="$2"
-FILES=( $(ls $HOME) )
+FILES=( $(ls -d $HOME/* ) ) # replace with sourcedir pls
 FILESEXTRA=( .mozilla )
 LNARGS="-sv"
 
+echo ${FILES[@]}
 
 function question {
 	read -p "Use ${PWD} as the target directory? [y\N]: " answer
@@ -17,29 +18,37 @@ function question {
 	fi
 }
 
+
+function namehandler {
+	FILES=( "${FILES[@]}" "${FILESEXTRA[@]}" )
+	#for file in "${FILES[@]}"
+	#do
+		#echo $file
+		#FILES[file]="$SOURCEDIR""$file"
+	#done
+}
+
+
 function default_output {
 	echo "Usage: homelink.sh <SOURCE> [TARGET]"
 }
+
 
 function filelist {
 	printf '%s\n' "${FILES[@]}"
 } # debug function
 
-function symlink { 
+function symlink {
 	for file in "${FILES[@]}"
 	do
-		echo "ln $LNARGS $SOURCEDIR $TARGETDIR"
-		echo "1"
+		echo "ln $LNARGS $file $TARGETDIR"
 	done
 }
 
-function addtoarray {
-#	FILES+=(.mozilla)
-	FILES=("${FILES}[@]}" "${FILESEXTRA}[@]}")
-}
 
-addtoarray
+namehandler
 filelist
+symlink
 
 if [[ ! -d "${SOURCEDIR}" ]]; then
 echo "please, supply at least the source directory"
