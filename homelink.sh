@@ -3,7 +3,7 @@
 SOURCEDIR="$1"
 TARGETDIR="$2"
 FILESEXTRA=( .mozilla )
-FILES=( $(ls -d $HOME/* $FILESEXTRA) ) # replace with sourcedir pls
+FILES=( $(ls -d $HOME/* $HOME/${FILESEXTRA[@]}) ) # replace with sourcedir pls
 LNARGS="-sv"
 
 echo ${FILES[@]}
