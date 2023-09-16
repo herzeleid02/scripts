@@ -3,29 +3,12 @@
 shopt -u nullglob dotglob
 SOURCEDIR="$1"
 TARGETDIR="$2"
+TARGETDIR="$(realpath $2)/"
 FILESEXTRA=( .mozilla )
-FILES=( $SOURCEDIR* $SOURCEDIR${FILESEXTRA[@]})
+FILES=( $HOME/* $HOME/.mozilla )
 LNARGS="-sv"
 
-function main() {
-
-if [[ ! -d "${SOURCEDIR}" ]]; then
-echo "please, supply at least the source directory"
-default_output
-#exit 1
-fi
-
-if [[ ! -d "${TARGETDIR}" ]]; then
-question
-#	else
-#exit 1
-fi
-
-TARGETDIR=$(realpath $TARGETDIR) # self-explanatory
-symlink
-
-}
-
+echo ${FILES[@]}
 
 function question {
 	read -p "Use ${PWD} as the target directory? [y\N]: " answer
@@ -33,8 +16,7 @@ function question {
 	if [ "$(echo $answer | tr '[:upper:]' '[:lower:]')" != "y" ]; then
 		exit 1
 	else
-		TARGETDIR="$PWD"
-
+		$TARGETDIR="$PWD"
 	fi
 }
 
@@ -44,15 +26,31 @@ function default_output {
 }
 
 
+function filelist {
+	printf %q "${FILES[@]}"
+} # debug function
+
 function symlink {
 	for file in "${FILES[@]}"
 	do
-		echo "ln $LNARGS $(printf %q "$file") $TARGETDIR/$(basename $file)"
+		echo "ln $LNARGS $(printf %q "$file") $TARGETDIR"
 	done
 }
 
-main
+
 #filelist
+symlink
 #echo "################"
 #printf %q "${FILES[25]}"
 
+if [[ ! -d "${SOURCEDIR}" ]]; then
+echo "please, supply at least the source directory"
+default_output
+exit 1
+fi
+
+if [[ ! -d "${TARGETDIR}" ]]; then
+question
+	else
+exit 1
+fi
