@@ -2,8 +2,8 @@
 # a script to symlink all neccessary stuff (data folders from ~/ and more)
 SOURCEDIR="$1"
 TARGETDIR="$2"
-FILES=( $(ls -d $HOME/* ) ) # replace with sourcedir pls
 FILESEXTRA=( .mozilla )
+FILES=( $(ls -d $HOME/* $FILESEXTRA) ) # replace with sourcedir pls
 LNARGS="-sv"
 
 echo ${FILES[@]}
@@ -21,11 +21,6 @@ function question {
 
 function namehandler {
 	FILES=( "${FILES[@]}" "${FILESEXTRA[@]}" )
-	#for file in "${FILES[@]}"
-	#do
-		#echo $file
-		#FILES[file]="$SOURCEDIR""$file"
-	#done
 }
 
 
