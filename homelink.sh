@@ -3,8 +3,8 @@
 shopt -u nullglob dotglob
 SOURCEDIR="$1"
 TARGETDIR="$2"
+TARGETDIR="$(realpath $2)/"
 FILESEXTRA=( .mozilla )
-#FILES=( $(ls -d $HOME/* $HOME/${FILESEXTRA[@]}) ) # replace with sourcedir pls  dont u dare parsing ls now!!!!
 FILES=( $HOME/* $HOME/.mozilla )
 LNARGS="-sv"
 
@@ -54,4 +54,3 @@ question
 	else
 exit 1
 fi
-
