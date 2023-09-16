@@ -19,11 +19,6 @@ function question {
 }
 
 
-function namehandler {
-	FILES=( "${FILES[@]}" "${FILESEXTRA[@]}" )
-}
-
-
 function default_output {
 	echo "Usage: homelink.sh <SOURCE> [TARGET]"
 }
@@ -41,7 +36,6 @@ function symlink {
 }
 
 
-namehandler
 filelist
 symlink
 
