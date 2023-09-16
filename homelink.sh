@@ -1,9 +1,11 @@
 #/bin/bash
 # a script to symlink all neccessary stuff (data folders from ~/ and more)
+shopt -u nullglob dotglob
 SOURCEDIR="$1"
 TARGETDIR="$2"
 FILESEXTRA=( .mozilla )
-FILES=( $(ls -d $HOME/* $HOME/${FILESEXTRA[@]}) ) # replace with sourcedir pls
+#FILES=( $(ls -d $HOME/* $HOME/${FILESEXTRA[@]}) ) # replace with sourcedir pls  dont u dare parsing ls now!!!!
+FILES=( $HOME/* $HOME/.mozilla )
 LNARGS="-sv"
 
 echo ${FILES[@]}
@@ -25,19 +27,21 @@ function default_output {
 
 
 function filelist {
-	printf '%s\n' "${FILES[@]}"
+	printf %q "${FILES[@]}"
 } # debug function
 
 function symlink {
 	for file in "${FILES[@]}"
 	do
-		echo "ln $LNARGS $file $TARGETDIR"
+		echo "ln $LNARGS $(printf %q "$file") $TARGETDIR"
 	done
 }
 
 
-filelist
+#filelist
 symlink
+#echo "################"
+#printf %q "${FILES[25]}"
 
 if [[ ! -d "${SOURCEDIR}" ]]; then
 echo "please, supply at least the source directory"
