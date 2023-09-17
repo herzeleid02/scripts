@@ -1,2 +1,3 @@
 # hello world
-scripts i made
+scripts i made. use at your own risk
+
