@@ -5,6 +5,7 @@ gpuamount=$(lspci | grep -ice "VGA")
 
 function main() {
 	gpuprobeb
+	gpuprobea
 }
 
 function distrocheck() {
@@ -20,13 +21,21 @@ function rpmfusion() {
 function gpuprobeb() {
 	#function for checking if it has dual-gpu srtup (optimus)
 	echo $gpuamount #debug
-	if (( $gpuamount > 1 )); then
-		echo "optimus" #debug
-		gputype="optimus"
+	case $gpuamount in
+		"0")
+			echo "amogus -- no gpu" #debug
+			;;
+		"1")
+			echo "one gpu" # debug
+			;;
+		"2")
+			echo "two gpu" # debug
+			;;
+		*)
+			echo "AMOGUS" #debug
+			;;
+	esac
 
-	else
-		echo "amogus" #debug 
-	fi
 }
 
 function gpuprobea() {
@@ -35,16 +44,20 @@ function gpuprobea() {
 
 	case $(lspci | grep -i "VGA" | tr '[:upper:]' '[:lower:]' | cut -c 36-38) in
 		"nvi")
-			echo "Nvidia"
+			echo "Nvidia" #debug
 			gputype="nvidia"
 			;;
 		"adv")
-			echo "AMD Radeon"
+			echo "AMD Radeon" #debug
 			gputype="amd"
 			;;
 		"int")
-			echo "Intel"
+			echo "Intel" #debug
 			gputype="intel"
+			;;
+		"*")
+			echo "AMOGUS GPU" # debug
+			gputype="other"
 			;;
 	esac
 }
