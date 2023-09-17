@@ -4,8 +4,7 @@ shopt -u nullglob dotglob
 SOURCEDIR="$1"
 TARGETDIR="$2"
 FILESEXTRA=( .mozilla )
-FILES=( $(realpath $SOURCEDIR)/* $SOURCEDIR${FILESEXTRA[@]})
-LNARGS="-sv"
+LNARGS="-svi"
 
 function main() {
 
@@ -14,13 +13,14 @@ echo "please, supply at least the source directory"
 	default_output
 fi
 
-echo "#################"
-echo "$TARGETDIR"
+FILES=( $(realpath $SOURCEDIR)/* $SOURCEDIR${FILESEXTRA[@]})
+
 
 if [[ ! -d "${TARGETDIR}" ]]; then 
 	if [[ "$TARGETDIR" = "" ]]; then
 		question
 	else
+		echo "Target directory is not valid"
 		exit 1
 	fi
 fi
@@ -55,7 +55,7 @@ function default_output {
 function symlink {
 	for file in "${FILES[@]}"
 	do
-		echo "ln $LNARGS $(printf %q "$file") $TARGETDIR/$(basename $file)"
+		ln $LNARGS $(printf %q "$file") $TARGETDIR/$(basename $file)
 	done
 }
 
