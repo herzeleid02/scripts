@@ -2,7 +2,7 @@
 gputype="" #var for gpu type (intel, amd, nvidia, other, optimus)
 
 function main() {
-	gpuprobea
+	gpuprobeb
 }
 
 function distrocheck() {
@@ -14,14 +14,26 @@ function rpmfusion() {
 	sudo dnf groupupdate core -y
 }
 
-function gpuprobeb(){
+function gpuprobec() {
+	echo 
+}
+
+function gpuprobeb() {
 	#function for checking if it has dual-gpu srtup (optimus)
-echo ""
+	gpuamount=$(cat ./fakelspci | grep -ice "VGA")
+	echo $gpuamount #debug
+	if (( $gpuamount > 1 )); then
+		echo "optimus" #debug
+		gputype="optimus"
+
+	else
+		echo "amogus" #debug 
+	fi
 }
 
 function gpuprobea() {
 	gpustring=$(lspci | grep -i "VGA" | cut -c 36-38)
-	echo "$gpustring"
+	echo "$gpustring" #debug
 
 	case $(lspci | grep -i "VGA" | tr '[:upper:]' '[:lower:]' | cut -c 36-38) in
 		"nvi")
