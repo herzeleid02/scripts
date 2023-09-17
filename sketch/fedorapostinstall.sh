@@ -50,7 +50,7 @@ echo ""
 function ascii() {
 	#cat << EOF
 	#EOF
-echo ""
+	echo ""
 }
 
 main
