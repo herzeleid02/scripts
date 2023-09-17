@@ -1,5 +1,7 @@
 #!/bin/bash
 gputype="" #var for gpu type (intel, amd, nvidia, other, optimus)
+#gpuamount=$(cat ./fakelspci | grep -ice "VGA")  #debug
+gpuamount=$(lspci | grep -ice "VGA")
 
 function main() {
 	gpuprobeb
@@ -14,13 +16,9 @@ function rpmfusion() {
 	sudo dnf groupupdate core -y
 }
 
-function gpuprobec() {
-	echo 
-}
 
 function gpuprobeb() {
 	#function for checking if it has dual-gpu srtup (optimus)
-	gpuamount=$(cat ./fakelspci | grep -ice "VGA")
 	echo $gpuamount #debug
 	if (( $gpuamount > 1 )); then
 		echo "optimus" #debug
