@@ -2,7 +2,7 @@
 gputype="" #var for gpu type (intel, amd, nvidia, other, optimus)
 
 function main() {
-	gpudetect
+	gpuprobea
 }
 
 function distrocheck() {
@@ -14,26 +14,29 @@ function rpmfusion() {
 	sudo dnf groupupdate core -y
 }
 
-function gpudetect() {
-	#todo -- awk filter because this is embarassing (or case)
-	#$gpustring=$(lscpi | grep -i "vga")
+function gpuprobeb(){
+	#function for checking if it has dual-gpu srtup (optimus)
+echo ""
+}
 
-	if [[ $(lspci | grep -i "vga" | grep -i "intel") -eq 0 ]]; then
-		gputype="intel"
-	fi
+function gpuprobea() {
+	gpustring=$(lspci | grep -i "VGA" | cut -c 36-38)
+	echo "$gpustring"
 
-	if [[ $(lspci |  grep -i "vga" | grep -i "advanced") -eq 0 ]]; then
-		gputype="amd"
-	fi
-
-	if [[ $(lspci | grep -i "vga" | grep -i "nvidia") -eq 0 ]]; then
-		gputype="nvidia"
-	fi
-
-	if [[ "$(lspci | grep -i "vga" | grep -ie "nvidia" -ie "intel")" -eq 0 ]]; then
-		gputype="optimus"
-	fi
-echo $gputype
+	case $(lspci | grep -i "VGA" | tr '[:upper:]' '[:lower:]' | cut -c 36-38) in
+		"nvi")
+			echo "Nvidia"
+			gputype="nvidia"
+			;;
+		"adv")
+			echo "AMD Radeon"
+			gputype="amd"
+			;;
+		"int")
+			echo "Intel"
+			gputype="intel"
+			;;
+	esac
 }
 
 function codecs() {
@@ -43,4 +46,11 @@ echo ""
 function nvidiadrivers() {
 echo ""
 }
+
+function ascii() {
+	#cat << EOF
+	#EOF
+echo ""
+}
+
 main
