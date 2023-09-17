@@ -14,11 +14,21 @@ echo "please, supply at least the source directory"
 	default_output
 fi
 
-if [ ! -d "${TARGETDIR}" ]; then
-	question
+echo "#################"
+echo "$TARGETDIR"
+
+if [[ ! -d "${TARGETDIR}" ]]; then 
+	if [[ "$TARGETDIR" = "" ]]; then
+		question
+	else
+		exit 1
+	fi
 fi
 
-TARGETDIR=$(realpath $TARGETDIR) # self-explanatory
+
+
+
+#TARGETDIR=$(realpath $TARGETDIR) # self-explanatory
 symlink
 
 }
