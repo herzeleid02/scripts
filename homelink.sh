@@ -3,7 +3,8 @@
 shopt -u nullglob dotglob
 SOURCEDIR="$1"
 TARGETDIR="$2"
-FILESEXTRA=( .mozilla )
+#FILESEXTRA=( .mozilla )
+FILESEXTRA=()
 LNARGS="-svi"
 
 function main() {
@@ -13,8 +14,6 @@ echo "please, supply at least the source directory"
 	default_output
 fi
 
-FILES=( $(realpath $SOURCEDIR)/* $SOURCEDIR${FILESEXTRA[@]})
-
 
 if [[ ! -d "${TARGETDIR}" ]]; then 
 	if [[ "$TARGETDIR" = "" ]]; then
@@ -23,6 +22,13 @@ if [[ ! -d "${TARGETDIR}" ]]; then
 		echo "Target directory is not valid"
 		exit 1
 	fi
+fi
+
+
+if [ ! ${#FILESEXTRA[@]} -eq 0 ]; then
+	FILES=( $(realpath $SOURCEDIR)/* $SOURCEDIR${FILESEXTRA[@]})
+else 
+	FILES=( $(realpath $SOURCEDIR)/*)
 fi
 
 
