@@ -1,5 +1,5 @@
 #!/bin/bash
-gputype="" #var for gpu type (intel, amd, nvidia, other, optimus, prime)
+gputype="" #var for gpu type (intel, amd, nvidia, other, optimus, intelamd)
 #gpuamount=$(cat ./fakelspci | grep -ice "VGA")  #debug
 gpuamount=$(lspci | grep -ice "VGA")
 
@@ -25,8 +25,8 @@ function gpuprobec() {
 
 
 
-function gpuprobeb() {
-	#function for checking if it has dual-gpu srtup (optimus)
+function gpucount() {
+	#function for counting gpus
 	echo $gpuamount #debug
 	case $gpuamount in
 		"0")
@@ -48,6 +48,7 @@ function gpuprobeb() {
 }
 
 function gpuprobea() {
+	#function for checking single gpu
 	gpustring=$(lspci | grep -i "VGA" | cut -c 36-38)
 	echo "$gpustring" #debug
 
@@ -70,6 +71,10 @@ function gpuprobea() {
 			;;
 	esac
 }
+
+function gpubprobeb()
+	# function for dualgpu installs, dont invoke it when the gpu is 1
+	if 
 
 function codecs() {
 echo ""
