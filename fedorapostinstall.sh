@@ -2,6 +2,10 @@
 gputype="" #var for gpu type (intel, amd, nvidia, other, optimus, intelamd)
 
 function main() {
+	check_privileges
+	flathub_remote
+	rpmfusion
+	codecs_ffmpeg
 	gpuprobe
 }
 
@@ -17,7 +21,7 @@ function check_privileges() {
 	
 }
 
-function flathub() {
+function flathub_remote() {
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 }
 
@@ -101,6 +105,9 @@ function codecs_sneed(){
 	echo "sneed gpu"
 }
 
+function goodbye_text(){
+Operation is finished. Please reboot your computer.
+}
 
 function ascii() {
 	#cat << EOF
