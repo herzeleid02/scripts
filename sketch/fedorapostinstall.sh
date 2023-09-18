@@ -1,5 +1,5 @@
 #!/bin/bash
-gputype="" #var for gpu type (intel, amd, nvidia, other, optimus)
+gputype="" #var for gpu type (intel, amd, nvidia, other, optimus, prime)
 #gpuamount=$(cat ./fakelspci | grep -ice "VGA")  #debug
 gpuamount=$(lspci | grep -ice "VGA")
 
@@ -17,6 +17,13 @@ function rpmfusion() {
 	sudo dnf groupupdate core -y
 }
 
+function gpuprobec() {
+	# function for checking for amd+amd setups or intel+amd or intel+nvidia
+	# invoke only in case when u have 2 cards
+		
+}
+
+
 
 function gpuprobeb() {
 	#function for checking if it has dual-gpu srtup (optimus)
@@ -27,9 +34,11 @@ function gpuprobeb() {
 			;;
 		"1")
 			echo "one gpu" # debug
+			#gpuprobea
 			;;
 		"2")
 			echo "two gpu" # debug
+			#gpuprobec
 			;;
 		*)
 			echo "AMOGUS" #debug
