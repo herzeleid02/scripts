@@ -61,7 +61,7 @@ function default_output {
 function symlink {
 	for file in "${FILES[@]}"
 	do
-		ln $LNARGS $(printf %q "$file") $TARGETDIR/$(basename $file)
+		ln $LNARGS $(printf %q "$file") $(basename $file)
 	done
 }
 
