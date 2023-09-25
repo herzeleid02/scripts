@@ -1,11 +1,11 @@
 #/bin/bash -x
 # a script to symlink all neccessary stuff (data folders from ~/ and more)
 shopt -u nullglob dotglob
-sourcedir="$1"
+sourcedir="$(realpath $1)"
 targetdir="$2"
 files=( ) 
-files_extra=( .mozilla )
-#filesEXTRA=( .mozilla )
+files_extra=( .mozilla)
+#filesEXTRA=( .mozilla)
 lnargs="-svi"
 
 function main(){
@@ -15,6 +15,8 @@ function main(){
 
 	echo "================="
 	echo "${files[@]}"
+	echo "================="
+	printf '%s\n' "${files[@]}"
 }
 
 function checker() {
@@ -36,11 +38,11 @@ fi
 }
 
 function collect_source_files(){
-	for file in $(realpath $sourcedir)/*
+	for file in ${sourcedir}/*
 	do
 		#echo -n "$file" #debug
 		#printf %q "$file" #debug
-		#echo "$file"
+		#echo "$file" # debug
 		files+=("$(printf %q "$file")")
 	done
 }
@@ -50,8 +52,7 @@ function collect_extra_files(){
 	do
 		#echo "$file" #debug
 		#printf %q "$sourcedir" "$file" # debug
-		files+=$(printf %q "$(realpath $sourcedir)" "$file")
-
+		files+=($(printf %q ${sourcedir}/"$file"))
 	done
 		
 }
