@@ -1,28 +1,38 @@
 #/bin/bash -x
 # a script to symlink all neccessary stuff (data folders from ~/ and more)
 shopt -u nullglob dotglob
-sourcedir="$(realpath $1)"
+sourcedir="$1"
 targetdir="$2"
 files=( ) 
-files_extra=( .mozilla)
+files2=( )
+links=( )
+files_extra=( .mozilla .chromium )
 #filesEXTRA=( .mozilla)
 lnargs="-svi"
 
 function main(){
 	checker
+	sourcedir="$(realpath "$sourcedir")"
 	collect_source_files
 	collect_extra_files
+	parse_target
 
-	echo "================="
-	echo "${files[@]}"
-	echo "================="
+	#echo "================="
+	#echo "${files[@]}"
+	#echo "================="
+	echo "$sourcedir"
+	echo "$targetdir"
+	echo " "
 	printf '%s\n' "${files[@]}"
+	echo " "
+	printf '%s\n' "${files2[@]}"
 }
 
 function checker() {
 if [[ ! -d "${sourcedir}" ]]; then
 echo "please, supply at least the source directory"
-	default_output
+	echo "Usage: homelink.sh <SOURCE> [TARGET]"
+	exit 1
 fi
 
 
@@ -48,7 +58,7 @@ function collect_source_files(){
 }
 
 function collect_extra_files(){
-	for file in "${files_extra}"
+	for file in "${files_extra[@]}"
 	do
 		#echo "$file" #debug
 		#printf %q "$sourcedir" "$file" # debug
@@ -58,7 +68,13 @@ function collect_extra_files(){
 }
 
 function parse_target(){
-	echo ""
+	targetdir="$(realpath "$targetdir")"	
+	for file in "${files[@]}"
+	do
+		echo "$file"
+		echo "sneed"
+		files2+=($(basename "$file"))
+	done
 }
 
 function parse_extra(){
@@ -73,17 +89,13 @@ function question {
 	if [ "$(echo $answer | tr '[:upper:]' '[:lower:]')" != "y" ]; then
 		exit 1
 	else
-	#	targetdir="$PWD"
+		targetdir="$PWD"
 	echo ""
 
 	fi
 }
 
 
-function default_output {
-	echo "Usage: homelink.sh <SOURCE> [TARGET]"
-	exit 1
-}
 
 
 function symlink {
