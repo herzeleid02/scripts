@@ -1,22 +1,31 @@
-#/bin/bash
+#/bin/bash -x
 # a script to symlink all neccessary stuff (data folders from ~/ and more)
 shopt -u nullglob dotglob
-SOURCEDIR="$1"
-TARGETDIR="$2"
-#FILESEXTRA=( .mozilla )
-FILESEXTRA=()
-LNARGS="-svi"
+sourcedir="$1"
+targetdir="$2"
+files=( ) 
+files_extra=( .mozilla )
+#filesEXTRA=( .mozilla )
+lnargs="-svi"
 
-function main() {
+function main(){
+	checker
+	collect_source_files
+	collect_extra_files
 
-if [[ ! -d "${SOURCEDIR}" ]]; then
+	echo "================="
+	echo "${files[@]}"
+}
+
+function checker() {
+if [[ ! -d "${sourcedir}" ]]; then
 echo "please, supply at least the source directory"
 	default_output
 fi
 
 
-if [[ ! -d "${TARGETDIR}" ]]; then 
-	if [[ "$TARGETDIR" = "" ]]; then
+if [[ ! -d "${targetdir}" ]]; then 
+	if [[ "$targetdir" = "" ]]; then
 		question
 	else
 		echo "Target directory is not valid"
@@ -24,20 +33,37 @@ if [[ ! -d "${TARGETDIR}" ]]; then
 	fi
 fi
 
-
-if [ ! ${#FILESEXTRA[@]} -eq 0 ]; then
-	FILES=( $(realpath $SOURCEDIR)/* $SOURCEDIR${FILESEXTRA[@]})
-else 
-	FILES=( $(realpath $SOURCEDIR)/*)
-fi
-
-
-
-
-#TARGETDIR=$(realpath $TARGETDIR) # self-explanatory
-symlink
-
 }
+
+function collect_source_files(){
+	for file in $(realpath $sourcedir)/*
+	do
+		#echo -n "$file" #debug
+		#printf %q "$file" #debug
+		#echo "$file"
+		files+=("$(printf %q "$file")")
+	done
+}
+
+function collect_extra_files(){
+	for file in "${files_extra}"
+	do
+		#echo "$file" #debug
+		#printf %q "$sourcedir" "$file" # debug
+		files+=$(printf %q "$(realpath $sourcedir)" "$file")
+
+	done
+		
+}
+
+function parse_target(){
+	echo ""
+}
+
+function parse_extra(){
+	echo ""
+}
+
 
 
 function question {
@@ -46,7 +72,8 @@ function question {
 	if [ "$(echo $answer | tr '[:upper:]' '[:lower:]')" != "y" ]; then
 		exit 1
 	else
-		TARGETDIR="$PWD"
+	#	targetdir="$PWD"
+	echo ""
 
 	fi
 }
@@ -59,14 +86,11 @@ function default_output {
 
 
 function symlink {
-	for file in "${FILES[@]}"
-	do
-		ln $LNARGS $(printf %q "$file") $(basename $file)
-	done
+	echo ""
 }
 
 main
 #filelist
 #echo "################"
-#printf %q "${FILES[25]}"
+#printf %q "${files[25]}"
 
