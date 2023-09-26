@@ -1,10 +1,10 @@
 #/bin/bash -x
+
 # a script to symlink all neccessary stuff (data folders from ~/ and more)
 shopt -u nullglob dotglob
 sourcedir="$1"
 targetdir="$2"
 files=( ) 
-files2=( )
 links=( )
 files_extra=( .mozilla .chromium )
 #filesEXTRA=( .mozilla)
@@ -16,16 +16,18 @@ function main(){
 	collect_source_files
 	collect_extra_files
 	parse_target
+	echo "====="
+	symlink
 
 	#echo "================="
 	#echo "${files[@]}"
 	#echo "================="
-	echo "$sourcedir"
-	echo "$targetdir"
-	echo " "
-	printf '%s\n' "${files[@]}"
-	echo " "
-	printf '%s\n' "${files2[@]}"
+	#echo "$sourcedir"
+	#echo "$targetdir"
+	#echo " "
+	##printf '%s\n' "${files[@]}"
+	#echo " "
+	#printf '%s\n' "${links[@]}"
 }
 
 function checker() {
@@ -71,17 +73,9 @@ function parse_target(){
 	targetdir="$(realpath "$targetdir")"	
 	for file in "${files[@]}"
 	do
-		echo "$file"
-		echo "sneed"
-		files2+=($(basename "$file"))
+		links+=("$targetdir"/$(basename "$file"))
 	done
 }
-
-function parse_extra(){
-	echo ""
-}
-
-
 
 function question {
 	read -p "Use ${PWD} as the target directory? [y\N]: " answer
@@ -95,11 +89,11 @@ function question {
 	fi
 }
 
-
-
-
 function symlink {
-	echo ""
+	for filenamecount in ${!files[@]}
+	do
+		echo "ln "$lnargs" "${files[filenamecount]}" "${links[filenamecount]}""
+	done
 }
 
 main
