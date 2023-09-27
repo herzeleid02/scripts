@@ -16,7 +16,6 @@ function main(){
 	collect_source_files
 	collect_extra_files
 	parse_target
-	echo "====="
 	symlink
 
 	#echo "================="
@@ -92,7 +91,8 @@ function question {
 function symlink {
 	for filenamecount in ${!files[@]}
 	do
-		echo "ln "$lnargs" "${files[filenamecount]}" "${links[filenamecount]}""
+		#echo "ln "$lnargs" "${files[filenamecount]}" "${links[filenamecount]}"" #debug
+		ln "$lnargs" "${files[filenamecount]}" "${links[filenamecount]}"
 	done
 }
 
