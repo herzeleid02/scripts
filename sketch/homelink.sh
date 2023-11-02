@@ -17,22 +17,12 @@ function main(){
 	collect_extra_files
 	parse_target
 	symlink
-
-	#echo "================="
-	#echo "${files[@]}"
-	#echo "================="
-	#echo "$sourcedir"
-	#echo "$targetdir"
-	#echo " "
-	##printf '%s\n' "${files[@]}"
-	#echo " "
-	#printf '%s\n' "${links[@]}"
 }
 
 function checker() {
 if [[ ! -d "${sourcedir}" ]]; then
 echo "please, supply at least the source directory"
-	echo "Usage: homelink.sh <SOURCE> [TARGET]"
+	echo "Usage: "$0" <SOURCE> [TARGET]"
 	exit 1
 fi
 
@@ -45,15 +35,11 @@ if [[ ! -d "${targetdir}" ]]; then
 		exit 1
 	fi
 fi
-
 }
 
 function collect_source_files(){
 	for file in ${sourcedir}/*
 	do
-		#echo -n "$file" #debug
-		#printf %q "$file" #debug
-		#echo "$file" # debug
 		files+=("$(printf %q "$file")")
 	done
 }
@@ -61,8 +47,6 @@ function collect_source_files(){
 function collect_extra_files(){
 	for file in "${files_extra[@]}"
 	do
-		#echo "$file" #debug
-		#printf %q "$sourcedir" "$file" # debug
 		files+=($(printf %q ${sourcedir}/"$file"))
 	done
 		
@@ -78,7 +62,6 @@ function parse_target(){
 
 function question {
 	read -p "Use ${PWD} as the target directory? [y\N]: " answer
-	#echo "$(echo $answer | tr '[:upper:]' '[:lower:]')" #debug
 	if [ "$(echo $answer | tr '[:upper:]' '[:lower:]')" != "y" ]; then
 		exit 1
 	else
@@ -91,13 +74,8 @@ function question {
 function symlink {
 	for filenamecount in ${!files[@]}
 	do
-		#echo "ln "$lnargs" "${files[filenamecount]}" "${links[filenamecount]}"" #debug
 		ln "$lnargs" "${files[filenamecount]}" "${links[filenamecount]}"
 	done
 }
 
 main
-#filelist
-#echo "################"
-#printf %q "${files[25]}"
-
