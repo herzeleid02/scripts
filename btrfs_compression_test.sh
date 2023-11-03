@@ -135,8 +135,7 @@ function test_compression {
         cmp "$TARGET_FILE" "$TARGET_UNCOMPRESSED" || { \
             _erro "Decompressed file doesn't match original input"; \
             exit 1; \
-        }100  4942  100  4942    0     0  89107      0 --:--:-- --:--:-- --:--:-- 89854
-
+        }
 
         rm -f "$TARGET_COMPRESSED" "$TARGET_UNCOMPRESSED"
     done
@@ -166,3 +165,4 @@ test_compression 9 \
 _info "Cleaning up..."
 rm -rf "$TMPDIR"
 _ok "Benchmark complete!"
+
