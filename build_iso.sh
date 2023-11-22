@@ -17,11 +17,9 @@ function main(){
 				exit;;
 			v) verbosity=1;;
 			d) chroot_dir=$(realpath $OPTARG)
-				arg_mode=1
-				echo "${chroot_dir}";;
+				arg_mode=1;;
 			o) output_iso=$(realpath $OPTARG)
-				arg_mode=1
-				echo "${output_iso}";;
+				arg_mode=1;;
 			\?) greeter_help;;
 		esac
 	done
