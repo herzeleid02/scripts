@@ -1,5 +1,4 @@
 #!/bin/bash
-
 build_root="/tmp/iso-$(date +%d%m%Y)-$(tr -dc a-z </dev/urandom | head -c 4)"
 chroot_dir=""
 output_iso=""
@@ -24,11 +23,11 @@ function main(){
 		esac
 	done
 
+
 	if [ $OPTIND -eq 1 ]; then
 		#echo "no options" # debug
 		assign_args "$@"
 	elif [ $1 = "-v" ] && [ ${arg_mode} == 0 ]; then
-		echo "feed"
 		shift 1
 		assign_args "$@"
 	fi
@@ -36,6 +35,8 @@ function main(){
 
 	init_flags
 	check_chroot
+	check_privileges
+	check_dependencies
 
 	if [ ${verbosity} == 1 ]; then
 		make_iso
@@ -73,6 +74,12 @@ function failure_cleanup(){
 }
 
 
+function check_privileges() {
+	if [[ "$EUID" -ne 0 ]]
+  		then echo "Please run as root"
+  	exit 1;
+	fi
+}
 
 ### the core functionality begins here
 
@@ -88,6 +95,15 @@ function init_flags(){
 function check_chroot(){
 	if [ ! -e ${chroot_dir}/bin/sh ] || [ ! -e ${chroot_dir}/boot/vmlinuz ]; then
 	echo "No /bin/sh or kernel image found, aborting..."
+	exit 1
+	fi
+}
+
+
+### TODO: check isolinux
+function check_dependencies(){
+	if [ ! -x "$(command -v xorriso)" ] || [ ! -x "$(command -v mksquashfs)" ]; then
+	echo "No xorriso or mksquashfs found, aborting..."
 	exit 1
 	fi
 }
