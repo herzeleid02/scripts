@@ -60,6 +60,7 @@ function assign_args(){
 }
 
 function greeter_help(){
+	echo "Astra Linux SE 1.7 bootstrap tool (made by t.lebedev@redacted.ru)"
 	echo "Usage:"
 	echo "$0 <options>"
 	echo "$0 source output"
